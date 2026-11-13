@@ -4,8 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.server.level.ServerPlayer;
 
 public final class CranklAdminShop implements ModInitializer {
 	public static final String MOD_ID = "crankl_admin_shop";
@@ -17,11 +17,11 @@ public final class CranklAdminShop implements ModInitializer {
 		service.reload();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> ShopCommands.register(dispatcher, service));
 		UseBlockCallback.EVENT.register((player, world, hand, hit) -> {
-			if (world.isClient() || !world.getBlockState(hit.getBlockPos()).isIn(BlockTags.ACQUIRABLE_JOB_SITE)) return ActionResult.PASS;
-			return service.openBoundWorkstation(player, world, hit.getBlockPos()) ? ActionResult.SUCCESS : ActionResult.PASS;
+			if (world.isClientSide() || !(player instanceof ServerPlayer serverPlayer) || !Workstations.isSupported(world.getBlockState(hit.getBlockPos()))) return InteractionResult.PASS;
+			return service.openBoundWorkstation(serverPlayer, world, hit.getBlockPos()) ? InteractionResult.SUCCESS_SERVER : InteractionResult.PASS;
 		});
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-			if (!world.isClient() && state.isIn(BlockTags.ACQUIRABLE_JOB_SITE)) service.unbind(world, pos);
+			if (!world.isClientSide() && Workstations.isSupported(state)) service.unbind(world, pos);
 			return true;
 		});
 	}

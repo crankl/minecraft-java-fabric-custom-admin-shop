@@ -3,8 +3,8 @@ package at.crankl.adminshop;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,7 +39,7 @@ final class ConfigRepository {
 	}
 	private void validateItem(String value) throws IOException {
 		Identifier id = Identifier.tryParse(value);
-		if (id == null || !Registries.ITEM.containsId(id)) throw new IOException("unknown item identifier: " + value);
+		if (id == null || !BuiltInRegistries.ITEM.containsKey(id)) throw new IOException("unknown item identifier: " + value);
 	}
 
 	private ShopConfig defaultConfig() {

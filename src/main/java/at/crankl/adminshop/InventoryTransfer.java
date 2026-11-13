@@ -1,6 +1,6 @@
 package at.crankl.adminshop;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
@@ -8,16 +8,11 @@ import java.util.List;
 public final class InventoryTransfer {
 	private InventoryTransfer() { }
 	public static boolean hasAtLeast(List<ItemStack> stacks, ItemStack wanted) {
-		long found = stacks.stream().filter(stack -> ItemStack.areItemsAndComponentsEqual(stack, wanted)).mapToLong(ItemStack::getCount).sum();
-		return found >= wanted.getCount();
+		long found = stacks.stream().filter(stack -> ItemStack.isSameItemSameComponents(stack, wanted)).mapToLong(ItemStack::getCount).sum();
+		return TransactionMath.hasAtLeast(found, wanted.getCount());
 	}
 	public static boolean canFit(List<ItemStack> stacks, ItemStack incoming) {
-		int remaining = incoming.getCount();
-		for (ItemStack stack : stacks) {
-			if (stack.isEmpty()) remaining -= incoming.getMaxCount();
-			else if (ItemStack.areItemsAndComponentsEqual(stack, incoming)) remaining -= stack.getMaxCount() - stack.getCount();
-			if (remaining <= 0) return true;
-		}
-		return false;
+		return TransactionMath.canFit(incoming.getCount(), incoming.getMaxStackSize(), stacks.stream()
+			.map(stack -> new TransactionMath.Slot(stack.getCount(), ItemStack.isSameItemSameComponents(stack, incoming))).toList());
 	}
 }

@@ -3,8 +3,8 @@ package at.crankl.adminshop;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,10 +18,10 @@ final class WorkstationStore {
 	private final Map<String, String> bindings = new HashMap<>();
 
 	WorkstationStore() { load(); }
-	String get(World world, BlockPos pos) { return bindings.get(key(world, pos)); }
-	void put(World world, BlockPos pos, String profile) { bindings.put(key(world, pos), profile); save(); }
-	void remove(World world, BlockPos pos) { if (bindings.remove(key(world, pos)) != null) save(); }
-	private String key(World world, BlockPos pos) { return world.getRegistryKey().getValue() + "@" + pos.asLong(); }
+	String get(Level world, BlockPos pos) { return bindings.get(key(world, pos)); }
+	void put(Level world, BlockPos pos, String profile) { bindings.put(key(world, pos), profile); save(); }
+	void remove(Level world, BlockPos pos) { if (bindings.remove(key(world, pos)) != null) save(); }
+	private String key(Level world, BlockPos pos) { return world.dimension().identifier() + "@" + pos.asLong(); }
 	private void load() {
 		if (Files.notExists(FILE)) return;
 		try (var reader = Files.newBufferedReader(FILE)) {

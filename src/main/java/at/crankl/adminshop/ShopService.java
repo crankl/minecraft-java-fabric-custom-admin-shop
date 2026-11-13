@@ -1,9 +1,9 @@
 package at.crankl.adminshop;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import java.io.IOException;
 
@@ -17,17 +17,17 @@ public final class ShopService {
 		catch (IOException exception) { throw new IllegalStateException("Could not load crankl-admin-shop.json", exception); }
 	}
 	public boolean hasProfile(String profile) { return config.profiles().containsKey(profile); }
-	public void open(ServerPlayerEntity player, String profile) {
+	public void open(ServerPlayer player, String profile) {
 		ShopConfig.Profile selected = config.profiles().get(profile);
-		if (selected == null) { player.sendMessage(Text.literal("Unknown shop profile: " + profile), false); return; }
+		if (selected == null) { player.sendSystemMessage(Component.literal("Unknown shop profile: " + profile)); return; }
 		ShopScreens.openCategories(player, profile, selected, this);
 	}
-	public boolean openBoundWorkstation(ServerPlayerEntity player, World world, BlockPos pos) {
+	public boolean openBoundWorkstation(ServerPlayer player, Level world, BlockPos pos) {
 		String profile = workstations.get(world, pos);
 		if (profile == null) return false;
 		open(player, profile);
 		return true;
 	}
-	public void bind(World world, BlockPos pos, String profile) { workstations.put(world, pos, profile); }
-	public void unbind(World world, BlockPos pos) { workstations.remove(world, pos); }
+	public void bind(Level world, BlockPos pos, String profile) { workstations.put(world, pos, profile); }
+	public void unbind(Level world, BlockPos pos) { workstations.remove(world, pos); }
 }

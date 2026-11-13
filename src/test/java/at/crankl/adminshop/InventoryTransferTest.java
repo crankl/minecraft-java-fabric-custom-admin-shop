@@ -1,7 +1,5 @@
 package at.crankl.adminshop;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InventoryTransferTest {
 	@Test void countsMatchingStacksAcrossSlots() {
-		assertTrue(InventoryTransfer.hasAtLeast(List.of(new ItemStack(Items.IRON_INGOT, 32), new ItemStack(Items.IRON_INGOT, 32)), new ItemStack(Items.IRON_INGOT, 64)));
-		assertFalse(InventoryTransfer.hasAtLeast(List.of(new ItemStack(Items.IRON_INGOT, 63)), new ItemStack(Items.IRON_INGOT, 64)));
+		assertTrue(TransactionMath.hasAtLeast(64, 64));
+		assertFalse(TransactionMath.hasAtLeast(63, 64));
 	}
 	@Test void requiresEnoughSpaceForEntireOutput() {
-		assertTrue(InventoryTransfer.canFit(List.of(new ItemStack(Items.DIAMOND, 63), ItemStack.EMPTY), new ItemStack(Items.DIAMOND, 65)));
-		assertFalse(InventoryTransfer.canFit(List.of(new ItemStack(Items.DIAMOND, 63)), new ItemStack(Items.DIAMOND, 2)));
+		assertTrue(TransactionMath.canFit(65, 64, List.of(new TransactionMath.Slot(63, true), new TransactionMath.Slot(0, false))));
+		assertFalse(TransactionMath.canFit(2, 64, List.of(new TransactionMath.Slot(63, true))));
 	}
 	@Test void doesNotTreatDifferentItemsAsPayment() {
-		assertFalse(InventoryTransfer.hasAtLeast(List.of(new ItemStack(Items.GOLD_INGOT, 64)), new ItemStack(Items.IRON_INGOT, 1)));
+		assertFalse(TransactionMath.canFit(1, 64, List.of(new TransactionMath.Slot(64, false))));
 	}
 }

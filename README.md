@@ -9,7 +9,7 @@ Crankl Admin Shop is a server-side Fabric mod for Minecraft Java 26.3. Players u
 - Fabric Loader `0.20.1` or newer
 - Fabric API `0.166.0+26.3`
 
-The project uses the current official Fabric 26.3 toolchain: Loom `1.19-SNAPSHOT` and Gradle 9.6. These versions were checked against the [Fabric 26.3 announcement](https://www.fabricmc.net/2026/09/15/263.html) and [Fabric Develop](https://fabricmc.net/develop/).
+The project uses the current official Fabric 26.3 toolchain: Loom `1.19-SNAPSHOT` and Gradle 9.6. Minecraft 26.3 uses Mojang's official, unobfuscated class names; the source is intentionally written against that API rather than discontinued Yarn mappings. These versions were checked against the [Fabric 26.3 announcement](https://www.fabricmc.net/2026/09/15/263.html), [Fabric Develop](https://fabricmc.net/develop/), and the [Fabric mapping migration guide](https://docs.fabricmc.net/develop/porting/mappings/).
 
 ## Build
 

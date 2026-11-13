@@ -1,26 +1,26 @@
 package at.crankl.adminshop;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.function.IntConsumer;
 
-final class ShopScreenHandler extends GenericContainerScreenHandler {
+final class ShopScreenHandler extends ChestMenu {
 	private final IntConsumer topSlotClick;
-	ShopScreenHandler(int syncId, PlayerInventory inventory, Inventory display, IntConsumer topSlotClick) {
-		super(ScreenHandlerType.GENERIC_9X6, syncId, inventory, display, 6);
+	ShopScreenHandler(int syncId, Inventory inventory, Container display, IntConsumer topSlotClick) {
+		super(MenuType.GENERIC_9x6, syncId, inventory, display, 6);
 		this.topSlotClick = topSlotClick;
 	}
-	@Override public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+	@Override public void clicked(int slotIndex, int button, ContainerInput actionType, Player player) {
 		if (slotIndex >= 0 && slotIndex < 54) { topSlotClick.accept(slotIndex); return; }
-		super.onSlotClick(slotIndex, button, actionType, player);
+		super.clicked(slotIndex, button, actionType, player);
 	}
-	@Override public ItemStack quickMove(PlayerEntity player, int slot) {
+	@Override public ItemStack quickMoveStack(Player player, int slot) {
 		// Prevent shift-clicking a player stack into the immutable display inventory.
 		return ItemStack.EMPTY;
 	}
