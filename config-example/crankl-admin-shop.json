@@ -1,0 +1,32 @@
+{
+  "profiles": {
+    "main": {
+      "title": "Admin Shop",
+      "categories": [
+        {
+          "id": "resources",
+          "title": "Resources",
+          "icon": "minecraft:chest",
+          "offers": [
+            { "id": "iron-for-diamond", "item": "minecraft:diamond", "itemCount": 1, "priceItem": "minecraft:iron_ingot", "priceCount": 64 },
+            { "id": "diamond-for-stone", "item": "minecraft:stone", "itemCount": 64, "priceItem": "minecraft:diamond", "priceCount": 1 },
+            { "id": "apples-for-diamond", "item": "minecraft:diamond", "itemCount": 1, "priceItem": "minecraft:apple", "priceCount": 16 }
+          ]
+        }
+      ]
+    },
+    "builder": {
+      "title": "Builder Supplies",
+      "categories": [
+        {
+          "id": "blocks",
+          "title": "Blocks",
+          "icon": "minecraft:bricks",
+          "offers": [
+            { "id": "stone", "item": "minecraft:stone", "itemCount": 64, "priceItem": "minecraft:diamond", "priceCount": 1 }
+          ]
+        }
+      ]
+    }
+  }
+}

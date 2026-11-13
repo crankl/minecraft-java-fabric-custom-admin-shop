@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "crankl_admin_shop",
+  "version": "${version}",
+  "name": "Crankl Admin Shop",
+  "description": "A server-side vanilla inventory admin shop.",
+  "authors": ["Crankl"],
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": { "main": ["at.crankl.adminshop.CranklAdminShop"] },
+  "depends": {
+    "fabricloader": ">=0.20.1",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
